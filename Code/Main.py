@@ -23,13 +23,13 @@ def goToWaypoint(next_x_coord, next_y_coord, curr_x, curr_y):
     dX = next_x_coord - curr_x
     dY = next_y_coord - curr_y
 
-    dHead = np.arctan(dY/dX)
+    dHead = np.arctan(dX/Y)
     dist = np.sqrt(dX^2 + dY^2)
-
-    if(dHead < 0):
-        turn_right(dHead)
-    elif(dHead > 0):
-        turn_left(dHead)
+    angleSteps = dHead*stepsPerDegree
+    if(dHead > 0):
+        leftMotorTurn(angleSteps)
+    elif(dHead < 0):
+        rightMotorTurn(-angleSteps)
     else:
 
     HEADING = HEADING + dHead
@@ -41,18 +41,12 @@ def goToWaypoint(next_x_coord, next_y_coord, curr_x, curr_y):
 
     return curr_position
 
-def turnLeft(dHead):
-    steps = stepsPerDegree*dHead
-    stepper1Turn(steps)
 
-def turnRight(dHead):
-	steps = stepsPerDegree*dHead
-	stepper2Turn(steps)
 
 def moveForward(steps):
     for i in range (0, steps):
-        stepper1Turn(1)
-	stepper2Turn(1)
+        leftMotorTurn(1)
+	rightMotorTurn(1)
 
 
 
