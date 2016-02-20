@@ -2,8 +2,15 @@
 
 import random
 
-def goToWaypoint():
-    pass
+def goToWaypoint(next_x_coord, next_y_coord, next_z_coord, curr_x, curr_y):
+    if(curr_x < ):
+        turn_right()
+    else:
+        turn_left()
+
+
+
+    return curr_position
 
 def getCoords():
     coord_options = {
