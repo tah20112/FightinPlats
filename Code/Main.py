@@ -1,12 +1,25 @@
 #!/bin/bash/python2.7
 
 import random
-
+import numpy as np
 def goToWaypoint(next_x_coord, next_y_coord, next_z_coord, curr_x, curr_y):
-    if(curr_x < ):
-        turn_right()
+
+    dX = next_x_coord - curr_x
+    dY = next_y_coord - curr_y
+	
+    dHead = np.arctan(dY/dX)
+    dist = np.sqrt(dX^2 + dY^2)
+
+    if(dHead < 0):
+        turn_right(dHead)
+    elif(dHead > 0):
+        turn_left(dHead)
     else:
-        turn_left()
+	
+    HEADING = HEADING + dHead
+
+    steps = dist*constants
+    moveForward(steps)
 
 
 
@@ -37,4 +50,6 @@ def getCoords():
     z_coords = coords[2::3]
 
     return [x_coords, y_coords, z_coords]
+
+
 
