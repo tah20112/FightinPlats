@@ -61,19 +61,18 @@ def leftMotorTurn(steps):
           print " Enable GPIO %i" %(xpin)
           GPIO.output(xpin, True)
         else:
-      GPIO.output(xpin, False)
+      	  GPIO.output(xpin, False)
 
  
       StepCounter += StepDir
  
       # If we reach the end of the sequence
       # start again
-      if (StepCounter>steps):
+      if (StepCounter==steps):
           return
-      else:
  
 
-def rightMotorTurn(steps)"
+def rightMotorTurn(steps):
     # Start main loop
  
       print StepCounter,
@@ -83,7 +82,7 @@ def rightMotorTurn(steps)"
         xpin=RightStepPins[pin]# Get GPIO
         ypin=LeftStepPins[pin]# Get GPIO
         if Seq[StepCounter][pin]!=0:
-          print " Enable GPIO %i" %(ypin))
+          print " Enable GPIO %i" %(ypin)
           GPIO.output(ypin, True)
         else:
           GPIO.output(ypin, False)
@@ -92,7 +91,6 @@ def rightMotorTurn(steps)"
  
       # If we reach the end of the sequence
       # start again
-      if (StepCounter=steps):
+      if (StepCounter==steps):
           return
-      else:
 

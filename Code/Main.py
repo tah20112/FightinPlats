@@ -10,8 +10,8 @@ servo_pin = 30
 import random
 import numpy as np
 import RPi.GPIO as GPIO
-import StepMotor.py as sm
-GPIO.setmode(GPIO.BOARD)
+import StepMotor as sm
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(servo_pin, GPIO.OUT)
 
 servo = GPIO.PWM(servo_pin, 50)
@@ -31,8 +31,7 @@ def goToWaypoint(next_x_coord, next_y_coord, curr_x, curr_y):
     elif(dHead < 0):
         sm.rightMotorTurn(-angleSteps)
     else:
-
-    HEADING = HEADING + dHead
+	HEADING = HEADING + dHead
 
     steps = np.round(stepsPerCoord*dist)
     moveForward(steps)
