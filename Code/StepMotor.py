@@ -48,31 +48,51 @@ else:
 # Initialise variables
 StepCounter = 0
  
-# Start main loop
-while True:
+
+def leftMotorTurn(steps):
+      StepCounter = 0
+      print StepCounter,
+      print Seq[StepCounter]
  
-  print StepCounter,
-  print Seq[StepCounter]
- 
-  for pin in range(0,4):
-    xpin=RightStepPins[pin]# Get GPIO
-    ypin=LeftStepPins[pin]# Get GPIO
-    if Seq[StepCounter][pin]!=0:
-      print " Enable GPIO %i" %(xpin)
-      GPIO.output(xpin, True)
-      GPIO.output(ypin, True)
-    else:
+      for pin in range(0,4):
+        xpin=RightStepPins[pin]# Get GPIO
+
+        if Seq[StepCounter][pin]!=0:
+          print " Enable GPIO %i" %(xpin)
+          GPIO.output(xpin, True)
+        else:
       GPIO.output(xpin, False)
-      GPIO.output(ypin, False)
+
  
-  StepCounter += StepDir
+      StepCounter += StepDir
  
-  # If we reach the end of the sequence
-  # start again
-  if (StepCounter>=StepCount):
-    StepCounter = 0
-  if (StepCounter<0):
-    StepCounter = StepCount+StepDir
+      # If we reach the end of the sequence
+      # start again
+      if (StepCounter>steps):
+          return
+      else:
  
-  # Wait before moving on
-  time.sleep(WaitTime)
+
+def rightMotorTurn(steps)"
+    # Start main loop
+ 
+      print StepCounter,
+      print Seq[StepCounter]
+ 
+      for pin in range(0,4):
+        xpin=RightStepPins[pin]# Get GPIO
+        ypin=LeftStepPins[pin]# Get GPIO
+        if Seq[StepCounter][pin]!=0:
+          print " Enable GPIO %i" %(ypin))
+          GPIO.output(ypin, True)
+        else:
+          GPIO.output(ypin, False)
+ 
+      StepCounter += StepDir
+ 
+      # If we reach the end of the sequence
+      # start again
+      if (StepCounter=steps):
+          return
+      else:
+
