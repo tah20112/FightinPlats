@@ -1,17 +1,28 @@
 #!/bin/bash/python2.7
 
-import random
-import numpy as np
-
 stepsPerRev = 200
 stepsPerInch = 25.464
 stepsPerDegree = 2.8703
 stepsPerCoord = 1.193675
-def goToWaypoint(next_x_coord, next_y_coord, next_z_coord, curr_x, curr_y):
+Heading = 0
+servo_pin = 30
+
+import random
+import numpy as np
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(servo_pin, GPIO.OUT)
+
+servo = GPIO.PWM(servo_pin, 50)
+servo.start(0)
+servo.ChangeDutyCycle(5)
+
+def goToWaypoint(next_x_coord, next_y_coord, curr_x, curr_y):
 
     dX = next_x_coord - curr_x
     dY = next_y_coord - curr_y
-	
+
     dHead = np.arctan(dY/dX)
     dist = np.sqrt(dX^2 + dY^2)
 
@@ -20,7 +31,7 @@ def goToWaypoint(next_x_coord, next_y_coord, next_z_coord, curr_x, curr_y):
     elif(dHead > 0):
         turn_left(dHead)
     else:
-	
+
     HEADING = HEADING + dHead
 
     steps = np.round(stepsPerCoord*dist)
@@ -73,4 +84,10 @@ def getCoords():
     return [x_coords, y_coords, z_coords]
 
 
-
+def movePen(command): # Takes string input
+    if (command == "UP"):
+        servo.ChangeDutyCycle(80)
+    elif (command == "DN"):
+        servo.ChangeDutyCycle(20)
+    else:
+        print "Servo cannot move to", command
