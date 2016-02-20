@@ -6,8 +6,7 @@ def lambda_handler(event, context):
     """ Route the incoming request based on type (LaunchRequest, IntentRequest,
     etc.) The JSON body of the request is provided in the event parameter.
     """
-    print("event.session.application.applicationId=" +
-          event['session']['application']['applicationId'])
+    print("event.session.application.applicationId=" + event['session']['application']['applicationId'])
 
     """
     Uncomment this if statement and populate with your skill's application ID to
@@ -58,8 +57,11 @@ def on_intent(intent_request, session):
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
 
-    # Dispatch to your skill's intent handlers
-    if intent_name == "StartGame":
+    reprompt_text = "Just Starting"
+
+    if reprompt_text == None:
+        return listenGuessing(intent, session)
+    elif intent_name == "StartGame":
         return get_welcome_reponse()
     elif intent_name == "Begin":
         return drawGame(intent, session)
@@ -90,14 +92,15 @@ def get_welcome_response():
     """
 
     session_attributes = {}
-    card_title = "Welcome"
-    speech_output = "Welcome to the Alexa Pictionary Game."
+    
+    speech_output = "Welcome to the Alexa Pictionary Game. Please say draw to start game"
 
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
 
-    reprompt_text = "Welcome to the Alexa Pictionary Game."
+    reprompt_text = "Welcome to the Alexa Pictionary Game. Please say draw to start game"
     should_end_session = False
+    card_title = reprompt_text
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
@@ -111,60 +114,66 @@ def drawGame(intent, session):
     should_end_session = False
     
     global LIST_OF_PICTURES
-    LIST_OF_PICTURES = {1:'platypus', 2:'fork', 3:'amazon', 4:'cup', 5:'hand', 6:'batman', 7:'plant', 8:'dead pool', 9:'make m. i. t.', 10:'apple'};
+    LIST_OF_PICTURES = ['platypus', 'fork', 'amazon', 'cup', 'hand', 'batman', 'plant', 'dead pool', 'dolphin', 'apple'];
     
     global picNumber
-    picNumber = random.randint(0,10)
+    picNumber = random.randint(0,9)    
     
-    card_title = "Attampting to draw" + LIST_OF_PICTURES[picNumber]
-    speech_output = "Attempting to draw now"
    
-    speech_output = "Ready for guesses"
-    if picNumber == 1:
-        card_title = LIST_OF_PICTURES[picNumber]
-    elif picNumber == 2:
-        card_title = LIST_OF_PICTURES[picNumber]
-    elif picNumber == 3:
-        card_title = LIST_OF_PICTURES[picNumber]
-    elif picNumber == 4:
-        card_title = LIST_OF_PICTURES[picNumber]
-    elif picNumber == 5:
-        card_title = LIST_OF_PICTURES[picNumber]
-    elif picNumber == 6:
-        card_title = LIST_OF_PICTURES[picNumber]
-    elif picNumber == 7:
-        card_title = LIST_OF_PICTURES[picNumber]
-    elif picNumber == 8:
-        card_title = LIST_OF_PICTURES[picNumber]
-    elif picNumber == 9:
-        card_title = LIST_OF_PICTURES[picNumber]
-    elif picNumber == 10:
-        card_title = LIST_OF_PICTURES[picNumber]
+    speech_output = "Ready for guesses. Guess using it is"
+    # if picNumber == 1:
+    #     card_title = LIST_OF_PICTURES[picNumber]
+    # elif picNumber == 2:
+    #     card_title = LIST_OF_PICTURES[picNumber]
+    # elif picNumber == 3:
+    #     card_title = LIST_OF_PICTURES[picNumber]
+    # elif picNumber == 4:
+    #     card_title = LIST_OF_PICTURES[picNumber]
+    # elif picNumber == 5:
+    #     card_title = LIST_OF_PICTURES[picNumber]
+    # elif picNumber == 6:
+    #     card_title = LIST_OF_PICTURES[picNumber]
+    # elif picNumber == 7:
+    #     card_title = LIST_OF_PICTURES[picNumber]
+    # elif picNumber == 8:
+    #     card_title = LIST_OF_PICTURES[picNumber]
+    # elif picNumber == 9:
+    #     card_title = LIST_OF_PICTURES[picNumber]
+    # elif picNumber == 10:
+    #     card_title = LIST_OF_PICTURES[picNumber]
         
     reprompt_text = None
+    card_title = "Attampting to draw: " + LIST_OF_PICTURES[picNumber]
 
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
 def listenGuessing(intent, session):
-    
-    PictureAttempt = intent['slots']['PictureAttempt']['value']
-    
+
     should_end_session = False
     
-    if LIST_OF_PICTURES[picNumber] == str(PictureAttempt):
-        speech_output = "Correct." + "The answer is " + str(PictureAttempt)
-        should_end_session = True
-        card_title = intent['name']
+
+    PictureAttempt = intent['slots']['PictureAttempt']['value']
+
+    if  PictureAttempt not in LIST_OF_PICTURES:
+        speech_output = "Not an option. Try Again "
         session_attributes = {}
-        reprompt_text = "Good Job"
+        reprompt_text = "Keep trying " 
+        
+        
+    elif LIST_OF_PICTURES[picNumber]== str(PictureAttempt):
+        speech_output = "Correct. " + "The answer is " + str(PictureAttempt)
+        should_end_session = True
+        session_attributes = {}
+        reprompt_text = "Good Job " 
         
     else:
-        speech_output = "Thats not right "
-        card_title = intent['name']
+        speech_output = "Nope. Try Again "
         session_attributes = {}
-        reprompt_text = "Keep trying"
-        
+        reprompt_text = "Keep Going" 
+
+    card_title = str(reprompt_text)
+       
     return build_response(session_attributes, build_speechlet_response(
     card_title, speech_output, reprompt_text, should_end_session))
 
