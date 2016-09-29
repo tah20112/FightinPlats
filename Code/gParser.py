@@ -2,6 +2,9 @@ import pictionaryBotFuncs as pbf
 import numpy as np
 import matplotlib.pyplot as plt
 
+def column(matrix, i):
+    return [row[i] for row in matrix]
+
 def getFile( i ):
 	if i == 0:	
 		return'../G-Code/amason.txt'
@@ -41,14 +44,15 @@ for i in range(0, 10):
 	
 	
 
-	arr = [xVals, yVals, zVals]
+	arr = pbf.removeZeros(xVals, yVals, zVals)
+	
 	filename = filename[:-4]
 	filename = filename[9:]
 	np.savetxt(('../Coord-Files') + filename + ('Coords.txt'), zip(*arr))
 	
 	
 	fig = plt.figure(i)
-	plt.plot(xVals, yVals, color='red', lw=2)
+	plt.plot(column(arr, 0), column(arr, 1), color='red', lw=2)
 
 	fig.show()
 

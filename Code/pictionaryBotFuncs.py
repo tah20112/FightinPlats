@@ -52,7 +52,7 @@ def getXValues( Lines ):
 
     for i in range(len(Lines)):
         x = getX(Lines[i])
-        print x
+
         x = int(float(x))
         xList.append(x)
 
@@ -92,10 +92,14 @@ def normZVals(zVals):
 
     return newZVals
 
-def checkForZeros(xVal, yVal, zVal):
-	if xVal == 0 and yVal == 0 and zVal == 0:
+def checkForZeros(xVal, yVal):
+	if xVal == 0 and yVal == 0:
 				return True
 
-
-	
+def removeZeros(xVals, yVals, zVals ):
+    newArray = []
+    for i in range(len(xVals)):
+        if not(checkForZeros(xVals[i], yVals[i])):	    
+            newArray.append([xVals[i], yVals[i], zVals[i]])    
+    return newArray
 
